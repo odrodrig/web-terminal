@@ -3,10 +3,11 @@ kind: Ingress
 metadata:
   name: terminal-ingress
   annotations:
-    ingress.bluemix.net/rewrite-path: "{{- range $index := untilStep 1 (int ( add (int .Values.participantCount) 1 )) 1 }}serviceName=terminal-service-{{ $index }} rewrite=/; serviceName=external-service-3000-{{ $index }} rewrite=/; serviceName=external-service-5000-{{ $index }} rewrite=/; serviceName=external-service-8080-{{ $index }} rewrite=/; serviceName=external-service-8081-{{ $index }} rewrite=/; {{- end }}"
-    ingress.bluemix.net/proxy-connect-timeout: "{{- range $index := untilStep 1 (int ( add (int .Values.participantCount) 1 )) 1 }}serviceName=terminal-service-{{ $index }} timeout=75s;  serviceName=external-service-3000{{ $index }} timeout=75s; serviceName=external-service-5000-{{ $index }} timeout=75s; serviceName=external-service-8080-{{ $index }} timeout=75s; serviceName=external-service-8081-{{ $index }} timeout=75s; {{- end }}"
-    ingress.bluemix.net/proxy-read-timeout: "{{- range $index := untilStep 1 (int ( add (int .Values.participantCount) 1 )) 1 }}serviceName=terminal-service-{{ $index }} timeout=3600s; serviceName=external-service-3000-{{ $index }} timeout=3600s; serviceName=external-service-5000-{{ $index }} timeout=3600s; serviceName=external-service-8080-{{ $index }} timeout=3600s; serviceName=external-service-8081-{{ $index }} timeout=3600s; {{- end }}"
-    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    # nginx.ingress.kubernetes.io/rewrite-path: "{{- range $index := untilStep 1 (int ( add (int .Values.participantCount) 1 )) 1 }}serviceName=terminal-service-{{ $index }} rewrite=/; serviceName=external-service-3000-{{ $index }} rewrite=/; serviceName=external-service-5000-{{ $index }} rewrite=/; serviceName=external-service-8080-{{ $index }} rewrite=/; serviceName=external-service-8081-{{ $index }} rewrite=/; {{- end }}"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "{{- range $index := untilStep 1 (int ( add (int .Values.participantCount) 1 )) 1 }}serviceName=terminal-service-{{ $index }} timeout=75s;  serviceName=external-service-3000{{ $index }} timeout=75s; serviceName=external-service-5000-{{ $index }} timeout=75s; serviceName=external-service-8080-{{ $index }} timeout=75s; serviceName=external-service-8081-{{ $index }} timeout=75s; {{- end }}"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "{{- range $index := untilStep 1 (int ( add (int .Values.participantCount) 1 )) 1 }}serviceName=terminal-service-{{ $index }} timeout=3600s; serviceName=external-service-3000-{{ $index }} timeout=3600s; serviceName=external-service-5000-{{ $index }} timeout=3600s; serviceName=external-service-8080-{{ $index }} timeout=3600s; serviceName=external-service-8081-{{ $index }} timeout=3600s; {{- end }}"
+    kubernetes.io/ingress.class: "public-iks-k8s-nginx"
 spec:
   tls:
   - hosts:
